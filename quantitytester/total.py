@@ -5,15 +5,18 @@ import sys
 sys.path.append("..")
 
 def scrape(darazurl):
-    r = requests.get(darazurl).text
-    jsonresponse = json.loads(r.split("window.pageData=")[1].split('</script>')[0])
-    mainlist = jsonresponse['mods']['listItems']
-    with open('../files/productprice.csv','w') as file:
-        writer = csv.writer(file)
-        writer.writerow(['Product name','Price'])
-        for item in mainlist:
-            price = 'Rs.'+ str(int(float(item['utLogMap']['current_price'])))
-            writer.writerow([item['name'],price])
+    try:
+        r = requests.get(darazurl).text
+        jsonresponse = json.loads(r.split("window.pageData=")[1].split('</script>')[0])
+        mainlist = jsonresponse['mods']['listItems']
+        with open('../files/productprice.csv','w') as file:
+            writer = csv.writer(file)
+            writer.writerow(['Product name','Price'])
+            for item in mainlist:
+                price = 'Rs.'+ str(int(float(item['utLogMap']['current_price'])))
+                writer.writerow([item['name'],price])
+    except:
+        return "Bad Url"
 
 def stopwordsremover(sentence):
     with open('../files/stopwords.txt', 'r')as file:

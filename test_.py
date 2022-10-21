@@ -38,12 +38,15 @@ def test_ngramcreator():
     return "Passed"
 
 def test_scrape():
+    scrape("https://www.daraz.com.np")
+    assert filechecker("productprice.csv") == "File not found"
     scrape("https://www.daraz.com.np/catalog/?_keyori=ss&from=input&page=1&q=noodles")
     assert filechecker("productprice.csv")== "Not Empty"
     return "Passed"
 
 def test_csvquantity():
     assert filechecker("pp_quantity.csv") == "Not Empty"
+    assert filechecker("wrongfile.csv") == "File not found"
     return "Passed"
 
 def test_main():
