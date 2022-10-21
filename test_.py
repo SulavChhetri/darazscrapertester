@@ -38,9 +38,13 @@ def test_ngramcreator():
     return "Passed"
 
 def test_scrape():
+    #Initially no scraping is done, so there is no file called productprice.csv
+    assert filechecker("productprice.csv") == "File not found"
+    
     #Fail Case, no file is created because of a bad url
     scrape("https://www.daraz.com.np")
     assert filechecker("productprice.csv") == "File not found"
+    
     #Pass Case, the scraped data is stored in a csv file
     scrape("https://www.daraz.com.np/catalog/?_keyori=ss&from=input&page=1&q=noodles")
     assert filechecker("productprice.csv")== "Not Empty"
