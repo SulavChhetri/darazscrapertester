@@ -21,14 +21,10 @@ def filechecker(filename): #return True if the file has data, else return False
     except:
         return False
 
-def filecount(filelist):
+def filecount(filename):
     count = 0
-    for i in range(len(filelist)):
-        try:
-            if os.path.isfile(filelist[i]):
-                count +=1
-        except:
-            pass
+    if os.path.isfile(filename):
+        count +=1
     return count
 
 def test_quantitytester():
@@ -93,6 +89,8 @@ def test_main():
     assert filechecker("noodlesprice.csv") == True
     assert filechecker("noodlesquantity.csv") ==True
 
+    #Check the number of quantity file created at each scrape
+    assert filecount("../files/noodlesquantity.csv") == 1
     #To check the number of files created by main() function
     assert len(os.listdir('../files/'))-prevlistfiles ==2
 
