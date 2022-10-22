@@ -72,9 +72,9 @@ def weightgen(item):
         if a[i].isnumeric():
             weight.append(a[i])
             if a[i+1]=='g':
-                return [str(''.join(weight)),'gm']
+                return int(''.join(weight))
             elif a[i+1]=='k' and a[i+2]=='g':
-                return [str(''.join(weight)),'kg']
+                return int(''.join(weight))*1000
         else:
             weight= []
 
@@ -91,15 +91,11 @@ def csvquantity(searchitem):
             quantity = quantitygen(product_name[value])
             if quantity==None:
                 quantity =1
-            weightlist = weightgen(product_name[value])
-            if weightlist == None:
-                weight = None
-                unit = None
-                writer.writerow([product_name[value],product_price[value],quantity,weight,unit])
+            weight = weightgen(product_name[value])
+            if weight == None:
+                writer.writerow([product_name[value],product_price[value],quantity,weight,None])
                 continue
-            weight = weightlist[0]
-            unit =weightlist[1]
-            writer.writerow([product_name[value],product_price[value],quantity,weight,unit])
+            writer.writerow([product_name[value],product_price[value],quantity,weight,'gm'])
 
 
 def main(searchitem):
