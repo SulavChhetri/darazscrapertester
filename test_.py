@@ -88,15 +88,13 @@ def test_weightgen():
 def test_main():
     filedeleter("../files/noodlesprice.csv")
     filedeleter("../files/noodlesquantity.csv")
+    prevlistfiles = len(os.listdir('../files/'))
     main("noodles")
     assert filechecker("noodlesprice.csv") == True
     assert filechecker("noodlesquantity.csv") ==True
 
-    #1 noodlesquantity file created at each scrape
-    assert filecount(["../files/noodlesquantity.csv"])==1
-
-    #Total files created after main function call
-    assert filecount(["../files/noodlesquantity.csv","../files/noodlesprice.csv"]) ==2
+    #To check the number of files created by main() function
+    assert len(os.listdir('../files/'))-prevlistfiles ==2
 
 if __name__ == "__main__":
     test_remove_punctuation()
@@ -107,3 +105,4 @@ if __name__ == "__main__":
     test_main()
     test_csvquantity()
     test_weightgen()
+
