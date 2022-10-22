@@ -23,12 +23,12 @@ def filechecker(filename): #return True if the file has data, else return False
 
 def filecount(filelist):
     count = 0
-    try:
-        for i in range(len(filelist)):
+    for i in range(len(filelist)):
+        try:
             if os.path.isfile(filelist[i]):
                 count +=1
-    except:
-        return count
+        except:
+            pass
     return count
 
 def test_quantitytester():
