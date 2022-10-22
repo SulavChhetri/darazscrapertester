@@ -55,11 +55,16 @@ def test_csvquantity():
     assert filechecker("wrongfile.csv") == "File not found"
     return "Passed"
 
+def test_weightgen():
+    assert weightgen("Hot Pot Gourmet Spicy Vegetable Noodles 100G") == 100
+    assert weightgen("Parle Monaco Classic Regular 150g") == 150
+    assert weightgen("Mcvities Digestive -1Kg") == 1000
+    return "Passed"
+
 def test_main():
     main("noodles")
     assert filechecker("noodlesquantity.csv") == "Not Empty"
     return "Passed"
-
 
 if __name__ == "__main__":
     print(test_remove_punctuation())
@@ -67,5 +72,6 @@ if __name__ == "__main__":
     print(test_stopwordremover())
     print(test_ngramcreator())
     print(test_scrape())
-    print(test_csvquantity())
     print(test_main())
+    print(test_csvquantity())
+    print(test_weightgen())

@@ -118,6 +118,6 @@ def filechecker(filename):
     except:
         return "File not found"
 
-main('sweet')
-main('noodles')
-main('biscuits')
+# main('sweet')
+# main('noodles')
+# main('biscuits')
