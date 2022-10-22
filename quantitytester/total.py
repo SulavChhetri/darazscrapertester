@@ -3,6 +3,9 @@ import json,csv,pandas as pd
 import sys
 sys.path.append("..")
 
+with open('../files/stopwords.txt', 'r')as file:
+        lines = [line.rstrip('\n') for line in file]
+
 def scrape(searchitem):
     darazurl = 'https://www.daraz.com.np/catalog/?_keyori=ss&from=input&page=1&q=' +searchitem
     try:
@@ -20,8 +23,6 @@ def scrape(searchitem):
         return "Bad Url"
 
 def stopwordsremover(sentence):
-    with open('../files/stopwords.txt', 'r')as file:
-        lines = [line.rstrip('\n') for line in file]
     nostopword_sentence =list()
     for item in sentence.split():
         if not item.lower() in lines:
@@ -69,12 +70,11 @@ def weightgen(item):
     weight = []
     for i in range(len(a)):
         if a[i].isnumeric():
-            if not weight:
-                weight.append(a[i])
-            else:
-                weight.append(a[i])
-                if a[i+1]=='g':
-                    return str(''.join(weight))
+            weight.append(a[i])
+            if a[i+1]=='g':
+                return [str(''.join(weight)),'gm']
+            elif a[i+1]=='k' and a[i+2]=='g':
+                return [str(''.join(weight)),'kg']
         else:
             weight= []
 
@@ -86,13 +86,20 @@ def csvquantity(searchitem):
     product_price = list(products['Price'])
     with open(f'../files/{namequantity}','w') as file:
         writer = csv.writer(file)
-        writer.writerow(['Name','Price','Quantity','Weight in (gm)'])
+        writer.writerow(['Name','Price','Quantity','Weight','Unit of Weight'])
         for value in range(len(product_name)):
             quantity = quantitygen(product_name[value])
-            weight = weightgen(product_name[value])
             if quantity==None:
                 quantity =1
-            writer.writerow([product_name[value],product_price[value],quantity,weight])
+            weightlist = weightgen(product_name[value])
+            if weightlist == None:
+                weight = None
+                unit = None
+                writer.writerow([product_name[value],product_price[value],quantity,weight,unit])
+                continue
+            weight = weightlist[0]
+            unit =weightlist[1]
+            writer.writerow([product_name[value],product_price[value],quantity,weight,unit])
 
 
 def main(searchitem):
