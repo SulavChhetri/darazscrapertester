@@ -30,14 +30,12 @@ def test_quantitytester():
     assert quantitygen(
         "Samyang Single Spicy Hot Chicken Ramen- 140gm* 5 pcs") == 5
     assert quantitygen("Current 2X Spicy Noodles (Pack of 5 X 100 gm)") == 5
-    return "Passed"
 
 
 def test_remove_punctuation():
     assert remove_punctuation("What are you doing?") == "What are you doing"
     assert remove_punctuation(
         "Samyang Single Spicy Hot Chicken Ramen- 140gm* 5 pcs") == "Samyang Single Spicy Hot Chicken Ramen 140gm 5 pcs"
-    return "Passed"
 
 
 def test_stopwordremover():
@@ -45,7 +43,6 @@ def test_stopwordremover():
         "CG Wai Wai Quick Masala Curry Instant Noodle 60gm Pack of 5") == "CG Wai Wai Quick Masala Curry Instant Noodle 60gm Pack 5"
     assert stopwordsremover(
         "Wai Wai Chicken Bhujia Curry 750g") == "Wai Wai Chicken Bhujia Curry 750g"
-    return "Passed"
 
 
 def test_ngramcreator():
@@ -54,12 +51,8 @@ def test_ngramcreator():
     assert ngramcreator("Samyang Buldak Jjajang Hot Chicken Flavor Ramen(Pack of 5)",2) == [
         'Samyang Buldak', 'Buldak Jjajang', 'Jjajang Hot', 'Hot Chicken', 'Chicken Flavor', 'Flavor RamenPack', 'RamenPack 5']
     assert ngramcreator("Spartan Egg Chowmein 360G",1) == ["Spartan","Egg","Chowmein","360G"]
-    return "Passed"
 
-def test_scrape():
-    #Initially no scraping is done, so there is no file called noodlesprice.csv
-    assert filechecker("noodlesprice.csv") == False
-    
+def test_scrape(): 
     #Fail Case, no file is created because of a bad url
     scrape("randomthing")
     assert filechecker("randomthingprice.csv") == False
@@ -67,12 +60,10 @@ def test_scrape():
     #Pass Case, the scraped data is stored in a csv file
     scrape("noodles")
     assert filechecker("noodlesprice.csv")== True
-    return "Passed"
 
 def test_csvquantity():
     assert filechecker("noodlesquantity.csv") == True
     assert filechecker("wrongfile.csv") == False
-    return "Passed"
 
 def test_weightgen():
     assert weightgen("Hot Pot Gourmet Spicy Vegetable Noodles 100G") == 100
@@ -81,17 +72,15 @@ def test_weightgen():
     return "Passed"
 
 def test_main():
-    # filedeleter("../files/noodlesquantity.csv")
+    filedeleter("../files/noodlesquantity.csv")
     main("noodles")
-    assert filechecker("noodlesquantity.csv") == True
-    return "Passed"
-
+    assert filechecker("noodlesquantity.csv") ==True
 if __name__ == "__main__":
-    # print(test_remove_punctuation())
-    # print(test_quantitytester())
-    # print(test_stopwordremover())
-    # print(test_ngramcreator())
-    # print(test_scrape())
-    print(test_main())
-    # print(test_csvquantity())
-    # print(test_weightgen())
+    test_remove_punctuation()
+    test_quantitytester()
+    test_stopwordremover()
+    test_ngramcreator()
+    test_scrape()
+    test_main()
+    test_csvquantity()
+    test_weightgen()

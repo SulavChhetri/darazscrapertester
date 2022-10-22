@@ -100,7 +100,6 @@ def csvquantity(searchitem):
 
 
 def main(searchitem):
-    return True
     try:
         csvquantity(searchitem)
     except:
@@ -108,6 +107,6 @@ def main(searchitem):
         csvquantity(searchitem)
 
 
-# main('sweet')
-# main('noodles')
-# main('biscuits')
+main('sweet')
+main('noodles')
+main('biscuits')
