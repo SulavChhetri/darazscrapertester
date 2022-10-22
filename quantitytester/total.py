@@ -1,15 +1,16 @@
-from itertools import product
 import requests
 import json,csv,pandas as pd
 import sys
 sys.path.append("..")
 
-def scrape(darazurl):
+def scrape(searchitem):
+    darazurl = 'https://www.daraz.com.np/catalog/?_keyori=ss&from=input&page=1&q=' +searchitem
     try:
+        nameprice = searchitem+ 'price.csv'
         r = requests.get(darazurl).text
         jsonresponse = json.loads(r.split("window.pageData=")[1].split('</script>')[0])
         mainlist = jsonresponse['mods']['listItems']
-        with open('../files/productprice.csv','w') as file:
+        with open(f'../files/{nameprice}','w') as file:
             writer = csv.writer(file)
             writer.writerow(['Product name','Price'])
             for item in mainlist:
@@ -62,27 +63,44 @@ def quantitygen(item):
                         if itee.isnumeric():
                             return int(itee)
 
+def weightgen(item):
+    items = item.split()
+    a = ''.join(items).lower()
+    weight = []
+    for i in range(len(a)):
+        if a[i].isnumeric():
+            if not weight:
+                weight.append(a[i])
+            else:
+                weight.append(a[i])
+                if a[i+1]=='g':
+                    return str(''.join(weight))
+        else:
+            weight= []
 
-def csvquantity():
-    products = pd.read_csv('../files/productprice.csv')
+def csvquantity(searchitem):
+    nameprice = searchitem+ 'price.csv'
+    namequantity = searchitem +'quantity.csv'
+    products = pd.read_csv(f'../files/{nameprice}')
     product_name= list(products['Product name'])
     product_price = list(products['Price'])
-    with open('../files/pp_quantity.csv','w') as file:
+    with open(f'../files/{namequantity}','w') as file:
         writer = csv.writer(file)
-        writer.writerow(['Name','Price','Quantity'])
+        writer.writerow(['Name','Price','Quantity','Weight in (gm)'])
         for value in range(len(product_name)):
             quantity = quantitygen(product_name[value])
+            weight = weightgen(product_name[value])
             if quantity==None:
                 quantity =1
-            writer.writerow([product_name[value],product_price[value],quantity])
+            writer.writerow([product_name[value],product_price[value],quantity,weight])
 
 
-def main(url):
+def main(searchitem):
     try:
-        csvquantity()
+        csvquantity(searchitem)
     except:
-        scrape(url)
-        csvquantity()
+        scrape(searchitem)
+        csvquantity(searchitem)
 
 def filechecker(filename):
     path ='../files/'+filename
@@ -97,4 +115,6 @@ def filechecker(filename):
     except:
         return "File not found"
 
-# main('https://www.daraz.com.np/catalog/?_keyori=ss&from=input&page=1&q=noodles')
+main('sweet')
+main('noodles')
+main('biscuits')
