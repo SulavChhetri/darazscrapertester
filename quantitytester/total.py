@@ -1,7 +1,8 @@
 import requests
 import json,csv,pandas as pd
-import sys
+import sys,os
 sys.path.append("..")
+
 
 with open('../files/stopwords.txt', 'r')as file:
         lines = [line.rstrip('\n') for line in file]
@@ -99,24 +100,13 @@ def csvquantity(searchitem):
 
 
 def main(searchitem):
+    return True
     try:
         csvquantity(searchitem)
     except:
         scrape(searchitem)
         csvquantity(searchitem)
 
-def filechecker(filename):
-    path ='../files/'+filename
-    try:
-        with open(path,'r') as f:
-            f.readline()
-            line = f.readline()
-            if line == '':
-                return "Empty"
-            else:
-                return "Not Empty"
-    except:
-        return "File not found"
 
 # main('sweet')
 # main('noodles')

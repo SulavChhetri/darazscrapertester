@@ -1,5 +1,24 @@
 from quantitytester.total import *
 
+def filedeleter(file_path): # return True if the file is deleted, else return False
+    if os.path.isfile(file_path):
+        os.remove(file_path)
+        return True
+    else:
+        return False
+
+def filechecker(filename): #return True if the file has data, else return False
+    path ='../files/'+filename
+    try:
+        with open(path,'r') as f:
+            f.readline()
+            line = f.readline()
+            if line == '':
+                return False
+            else:
+                return True
+    except:
+        return False
 
 def test_quantitytester():
     # Pass case
@@ -39,20 +58,20 @@ def test_ngramcreator():
 
 def test_scrape():
     #Initially no scraping is done, so there is no file called noodlesprice.csv
-    assert filechecker("noodlesprice.csv") == "File not found"
+    assert filechecker("noodlesprice.csv") == False
     
     #Fail Case, no file is created because of a bad url
     scrape("randomthing")
-    assert filechecker("randomthingprice.csv") == "File not found"
+    assert filechecker("randomthingprice.csv") == False
     
     #Pass Case, the scraped data is stored in a csv file
     scrape("noodles")
-    assert filechecker("noodlesprice.csv")== "Not Empty"
+    assert filechecker("noodlesprice.csv")== True
     return "Passed"
 
 def test_csvquantity():
-    assert filechecker("noodlesquantity.csv") == "Not Empty"
-    assert filechecker("wrongfile.csv") == "File not found"
+    assert filechecker("noodlesquantity.csv") == True
+    assert filechecker("wrongfile.csv") == False
     return "Passed"
 
 def test_weightgen():
@@ -62,16 +81,17 @@ def test_weightgen():
     return "Passed"
 
 def test_main():
+    # filedeleter("../files/noodlesquantity.csv")
     main("noodles")
-    assert filechecker("noodlesquantity.csv") == "Not Empty"
+    assert filechecker("noodlesquantity.csv") == True
     return "Passed"
 
 if __name__ == "__main__":
-    print(test_remove_punctuation())
-    print(test_quantitytester())
-    print(test_stopwordremover())
-    print(test_ngramcreator())
-    print(test_scrape())
+    # print(test_remove_punctuation())
+    # print(test_quantitytester())
+    # print(test_stopwordremover())
+    # print(test_ngramcreator())
+    # print(test_scrape())
     print(test_main())
-    print(test_csvquantity())
-    print(test_weightgen())
+    # print(test_csvquantity())
+    # print(test_weightgen())
