@@ -1,6 +1,6 @@
 import requests
 import json,csv,pandas as pd
-import sys,os
+import sys
 sys.path.append("..")
 
 

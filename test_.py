@@ -1,4 +1,5 @@
 from quantitytester.total import *
+import os
 
 def filedeleter(file_path): # return True if the file is deleted, else return False
     if os.path.isfile(file_path):
@@ -19,6 +20,16 @@ def filechecker(filename): #return True if the file has data, else return False
                 return True
     except:
         return False
+
+def filecount(filelist):
+    count = 0
+    try:
+        for i in range(len(filelist)):
+            if os.path.isfile(filelist[i]):
+                count +=1
+    except:
+        return count
+    return count
 
 def test_quantitytester():
     # Pass case
@@ -58,10 +69,13 @@ def test_scrape():
     assert filechecker("randomthingprice.csv") == False
     
     #Pass Case, the scraped data is stored in a csv file
+    filedeleter("../files/noodlesprice.csv")
     scrape("noodles")
     assert filechecker("noodlesprice.csv")== True
 
 def test_csvquantity():
+    filedeleter("../files/noodlesquantity.csv")
+    csvquantity("noodles")
     assert filechecker("noodlesquantity.csv") == True
     assert filechecker("wrongfile.csv") == False
 
@@ -72,9 +86,18 @@ def test_weightgen():
     return "Passed"
 
 def test_main():
+    filedeleter("../files/noodlesprice.csv")
     filedeleter("../files/noodlesquantity.csv")
     main("noodles")
+    assert filechecker("noodlesprice.csv") == True
     assert filechecker("noodlesquantity.csv") ==True
+
+    #1 noodlesquantity file created at each scrape
+    assert filecount(["../files/noodlesquantity.csv"])==1
+
+    #Total files created after main function call
+    assert filecount(["../files/noodlesquantity.csv","../files/noodlesprice.csv"]) ==2
+
 if __name__ == "__main__":
     test_remove_punctuation()
     test_quantitytester()
