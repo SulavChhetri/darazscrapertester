@@ -38,26 +38,26 @@ def test_ngramcreator():
     return "Passed"
 
 def test_scrape():
-    #Initially no scraping is done, so there is no file called productprice.csv
-    assert filechecker("productprice.csv") == "File not found"
+    #Initially no scraping is done, so there is no file called noodlesprice.csv
+    assert filechecker("noodlesprice.csv") == "File not found"
     
     #Fail Case, no file is created because of a bad url
-    scrape("https://www.daraz.com.np")
-    assert filechecker("productprice.csv") == "File not found"
+    scrape("randomthing")
+    assert filechecker("randomthingprice.csv") == "File not found"
     
     #Pass Case, the scraped data is stored in a csv file
-    scrape("https://www.daraz.com.np/catalog/?_keyori=ss&from=input&page=1&q=noodles")
-    assert filechecker("productprice.csv")== "Not Empty"
+    scrape("noodles")
+    assert filechecker("noodlesprice.csv")== "Not Empty"
     return "Passed"
 
 def test_csvquantity():
-    assert filechecker("pp_quantity.csv") == "Not Empty"
+    assert filechecker("noodlesquantity.csv") == "Not Empty"
     assert filechecker("wrongfile.csv") == "File not found"
     return "Passed"
 
 def test_main():
-    main("https://www.daraz.com.np/catalog/?_keyori=ss&from=input&page=1&q=noodles")
-    assert filechecker("pp_quantity.csv") == "Not Empty"
+    main("noodles")
+    assert filechecker("noodlesquantity.csv") == "Not Empty"
     return "Passed"
 
 
