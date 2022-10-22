@@ -105,8 +105,3 @@ def main(searchitem):
     except:
         scrape(searchitem)
         csvquantity(searchitem)
-
-
-main('sweet')
-main('noodles')
-main('biscuits')
