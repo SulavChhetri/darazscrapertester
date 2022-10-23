@@ -79,13 +79,9 @@ def test_weightgen():
 def test_main():
     filedeleter("../files/noodlesprice.csv")
     filedeleter("../files/noodlesquantity.csv")
-    prevlistfiles = len(os.listdir('../files/'))
     main("noodles")
     assert filechecker("noodlesprice.csv") == True
     assert filechecker("noodlesquantity.csv") ==True
-
-    #To check the number of files created by main() function
-    assert len(os.listdir('../files/'))-prevlistfiles ==2
 
 if __name__ == "__main__":
     test_remove_punctuation()
