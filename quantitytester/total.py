@@ -1,6 +1,7 @@
+from re import search
 import requests
 import json,csv,pandas as pd
-import sys
+import sys,os
 sys.path.append("..")
 
 
@@ -8,8 +9,8 @@ with open('../files/stopwords.txt', 'r')as file:
         lines = [line.rstrip('\n') for line in file]
 
 def scrape(searchitem):
-    darazurl = 'https://www.daraz.com.np/catalog/?_keyori=ss&from=input&page=1&q=' +searchitem
     try:
+        darazurl = 'https://www.daraz.com.np/catalog/?_keyori=ss&from=input&page=1&q=' +searchitem
         nameprice = searchitem+ 'price.csv'
         r = requests.get(darazurl).text
         jsonresponse = json.loads(r.split("window.pageData=")[1].split('</script>')[0])
@@ -100,8 +101,9 @@ def csvquantity(searchitem):
 
 
 def main(searchitem):
-    try:
-        csvquantity(searchitem)
-    except:
+    filepath = "../files/"+searchitem + 'price.csv'
+    if not (os.path.isfile(filepath)):
         scrape(searchitem)
+        csvquantity(searchitem)
+    else:
         csvquantity(searchitem)

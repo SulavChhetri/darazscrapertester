@@ -1,5 +1,5 @@
 from quantitytester.total import *
-import os
+import os,pandas as pd
 
 def filedeleter(file_path): # return True if the file is deleted, else return False
     if os.path.isfile(file_path):
@@ -82,6 +82,8 @@ def test_main():
     main("noodles")
     assert filechecker("noodlesprice.csv") == True
     assert filechecker("noodlesquantity.csv") ==True
+
+    assert len(pd.read_csv("../files/noodlesprice.csv"))==len(pd.read_csv("../files/noodlesquantity.csv"))
 
 if __name__ == "__main__":
     test_remove_punctuation()
